@@ -20,9 +20,14 @@ class AristonVelisDevice(AristonDevice, AristonVelisBaseDevice, ABC):
         self,
         api: AristonAPI,
         attributes: dict[str, Any],
+        is_metric: bool = True,
+        language_tag: str = "en-US",
     ) -> None:
         super().__init__(api, attributes)
         self.plant_settings: dict[str, Any] = dict()
+        self.umsys = "si" if is_metric else "us"
+        self.unit = "°C" if is_metric else "°F"
+        self.language_tag = language_tag
 
     @property
     @abstractmethod
@@ -52,6 +57,7 @@ class AristonVelisDevice(AristonDevice, AristonVelisBaseDevice, ABC):
             self.anti_legionella_on_off,
             1.0 if anti_leg else 0.0,
             1.0 if self.plant_settings[self.anti_legionella_on_off] else 0.0,
+            self.umsys,
         )
         self.plant_settings[self.anti_legionella_on_off] = anti_leg
 
@@ -63,6 +69,7 @@ class AristonVelisDevice(AristonDevice, AristonVelisBaseDevice, ABC):
             self.anti_legionella_on_off,
             1.0 if anti_leg else 0.0,
             1.0 if self.plant_settings[self.anti_legionella_on_off] else 0.0,
+            self.umsys,
         )
         self.plant_settings[self.anti_legionella_on_off] = anti_leg
 
@@ -74,6 +81,7 @@ class AristonVelisDevice(AristonDevice, AristonVelisBaseDevice, ABC):
             self.max_setpoint_temp,
             max_setpoint_temp,
             self.plant_settings[self.max_setpoint_temp],
+            self.umsys,
         )
         self.plant_settings[self.max_setpoint_temp] = max_setpoint_temp
 
@@ -85,6 +93,7 @@ class AristonVelisDevice(AristonDevice, AristonVelisBaseDevice, ABC):
             self.max_setpoint_temp,
             max_setpoint_temp,
             self.plant_settings[self.max_setpoint_temp],
+            self.umsys,
         )
         self.plant_settings[self.max_setpoint_temp] = max_setpoint_temp
 
@@ -128,4 +137,4 @@ class AristonVelisDevice(AristonDevice, AristonVelisBaseDevice, ABC):
     @property
     def water_heater_temperature_unit(self) -> str:
         """Get water heater temperature unit"""
-        return "°C"
+        return self.unit

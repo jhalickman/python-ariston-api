@@ -114,7 +114,7 @@ def _get_device(
             if device_class is None:
                 _LOGGER.exception("Unsupported whe type %s", whe_type)
                 return None
-            return device_class(api, device)
+            return device_class(api, device, is_metric, language_tag)
 
         case SystemType.BSB.value:
             return AristonBsbDevice(api, device)

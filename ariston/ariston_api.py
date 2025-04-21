@@ -185,19 +185,19 @@ class AristonAPI:
             return data
         return dict()
 
-    def get_velis_plant_data(self, plant_data: PlantData, gw_id: str) -> dict[str, Any]:
+    def get_velis_plant_data(self, plant_data: PlantData, gw_id: str, umsys: str) -> dict[str, Any]:
         """Get Velis properties"""
-        data = self._get(f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}")
+        data = self._get(f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}?umsys={umsys}")
         if data is not None:
             return data
         return dict()
 
     def get_velis_plant_settings(
-        self, plant_data: PlantData, gw_id: str
+        self, plant_data: PlantData, gw_id: str, umsys: str
     ) -> dict[str, Any]:
         """Get Velis settings"""
         settings = self._get(
-            f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}/plantSettings"
+            f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}/plantSettings?umsys={umsys}"
         )
         if settings is not None:
             return settings
@@ -265,10 +265,10 @@ class AristonAPI:
             },
         )
 
-    def set_nuos_mode(self, gw_id: str, value: NuosSplitOperativeMode) -> None:
+    def set_nuos_mode(self, gw_id: str, value: NuosSplitOperativeMode, umsys: str) -> None:
         """Set Velis Nuos mode"""
         self._post(
-            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/operativeMode",
+            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/operativeMode?umsys={umsys}",
             {
                 "new": value.value,
             },
@@ -322,10 +322,11 @@ class AristonAPI:
         reduced: float,
         old_comfort: Optional[float],
         old_reduced: Optional[float],
+        umsys: str,
     ) -> None:
         """Set Nuos temperature"""
         self._post(
-            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/temperatures",
+            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/temperatures?umsys={umsys}",
             {
                 "new": {
                     "comfort": comfort,
@@ -386,10 +387,10 @@ class AristonAPI:
             },
         )
 
-    def set_nous_boost(self, gw_id: str, boost: bool) -> None:
+    def set_nous_boost(self, gw_id: str, boost: bool, umsys: str) -> None:
         """ "Set Nous boost"""
         self._post(
-            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/boost",
+            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/boost?umsys={umsys}",
             boost,
         )
 
@@ -421,10 +422,11 @@ class AristonAPI:
         setting: str,
         value: float,
         old_value: float,
+        umsys: str,
     ) -> None:
         """Set Velis plant setting"""
         self._post(
-            f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}/plantSettings",
+            f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}/plantSettings?umsys={umsys}",
             {setting: {"new": value, "old": old_value}},
         )
 
@@ -640,22 +642,22 @@ class AristonAPI:
         return dict()
 
     async def async_get_velis_plant_data(
-        self, plant_data: PlantData, gw_id: str
+        self, plant_data: PlantData, gw_id: str, umsys: str
     ) -> dict[str, Any]:
         """Async get Velis properties"""
         med_plant_data = await self._async_get(
-            f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}"
+            f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}?umsys={umsys}"
         )
         if med_plant_data is not None:
             return med_plant_data
         return dict()
 
     async def async_get_velis_plant_settings(
-        self, plant_data: PlantData, gw_id: str
+        self, plant_data: PlantData, gw_id: str, umsys: str
     ) -> dict[str, Any]:
         """Async get Velis settings"""
         med_plant_settings = await self._async_get(
-            f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}/plantSettings"
+            f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}/plantSettings?umsys={umsys}"
         )
         if med_plant_settings is not None:
             return med_plant_settings
@@ -726,11 +728,11 @@ class AristonAPI:
         )
 
     async def async_set_nuos_mode(
-        self, gw_id: str, value: NuosSplitOperativeMode
+        self, gw_id: str, value: NuosSplitOperativeMode, umsys: str
     ) -> None:
         """Async set Velis Nuos mode"""
         await self._async_post(
-            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/operativeMode",
+            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/operativeMode?umsys={umsys}",
             {
                 "new": value.value,
             },
@@ -784,10 +786,11 @@ class AristonAPI:
         reduced: float,
         old_comfort: Optional[float],
         old_reduced: Optional[float],
+        umsys: str,
     ) -> None:
         """Async set Velis Lydos temperature"""
         await self._async_post(
-            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/temperatures",
+            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/temperatures?umsys={umsys}",
             {
                 "new": {
                     "comfort": comfort,
@@ -848,10 +851,10 @@ class AristonAPI:
             },
         )
 
-    async def async_set_nous_boost(self, gw_id: str, boost: bool) -> None:
+    async def async_set_nous_boost(self, gw_id: str, boost: bool, umsys: str) -> None:
         """ "Set Nous boost"""
         await self._async_post(
-            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/boost",
+            f"{self.__api_url}{ARISTON_VELIS}/{PlantData.Slp.value}/{gw_id}/boost?umsys={umsys}",
             boost,
         )
 
@@ -885,10 +888,11 @@ class AristonAPI:
         setting: str,
         value: float,
         old_value: float,
+        umsys: str,
     ) -> None:
         """Async set Velis Evo plant setting"""
         await self._async_post(
-            f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}/plantSettings",
+            f"{self.__api_url}{ARISTON_VELIS}/{plant_data.value}/{gw_id}/plantSettings?umsys={umsys}",
             {setting: {"new": value, "old": old_value}},
         )
 

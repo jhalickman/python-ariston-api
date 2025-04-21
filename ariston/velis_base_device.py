@@ -41,22 +41,22 @@ class AristonVelisBaseDevice(AristonBaseDevice, ABC):
 
     def update_state(self) -> None:
         """Update the device states from the cloud"""
-        self.data = self.api.get_velis_plant_data(self.plant_data, self.gw)
+        self.data = self.api.get_velis_plant_data(self.plant_data, self.gw, self.umsys)
 
     async def async_update_state(self) -> None:
         """Async update the device states from the cloud"""
-        self.data = await self.api.async_get_velis_plant_data(self.plant_data, self.gw)
+        self.data = await self.api.async_get_velis_plant_data(self.plant_data, self.gw, self.umsys)
 
     def update_settings(self) -> None:
         """Get device settings wrapper"""
         self.plant_settings = self.api.get_velis_plant_settings(
-            self.plant_data, self.gw
+            self.plant_data, self.gw, self.umsys
         )
 
     async def async_update_settings(self) -> None:
         """Get device settings wrapper"""
         self.plant_settings = await self.api.async_get_velis_plant_settings(
-            self.plant_data, self.gw
+            self.plant_data, self.gw, self.umsys
         )
 
     def set_power(self, power: bool):

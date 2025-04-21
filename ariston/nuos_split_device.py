@@ -114,17 +114,17 @@ class AristonNuosSplitDevice(AristonVelisDevice):
 
     def set_water_heater_boost(self, boost: bool):
         """Set water heater boost"""
-        self.api.set_nous_boost(self.gw, boost)
+        self.api.set_nous_boost(self.gw, boost, self.umsys)
         self.data[NuosSplitProperties.BOOST_ON] = boost
 
     async def async_set_water_heater_boost(self, boost: bool):
         """Set water heater boost"""
-        await self.api.async_set_nous_boost(self.gw, boost)
+        await self.api.async_set_nous_boost(self.gw, boost, self.umsys)
         self.data[NuosSplitProperties.BOOST_ON] = boost
 
     def _set_water_heater_temperature(self, temperature: float, reduced: float):
         """Set water heater temperature"""
-        self.api.set_nuos_temperature(self.gw, temperature, reduced, self.water_heater_target_temperature, self.water_heater_reduced_temperature)
+        self.api.set_nuos_temperature(self.gw, temperature, reduced, self.water_heater_target_temperature, self.water_heater_reduced_temperature, self.umsys)
         self.data[NuosSplitProperties.PROC_REQ_TEMP] = temperature
         self.data[NuosSplitProperties.REDUCED_TEMP] = reduced
 
@@ -141,7 +141,7 @@ class AristonNuosSplitDevice(AristonVelisDevice):
         self, temperature: float, reduced: float
     ):
         """Async set water heater temperature"""
-        await self.api.async_set_nuos_temperature(self.gw, temperature, reduced, self.water_heater_target_temperature, self.water_heater_reduced_temperature)
+        await self.api.async_set_nuos_temperature(self.gw, temperature, reduced, self.water_heater_target_temperature, self.water_heater_reduced_temperature, self.umsys)
         self.data[NuosSplitProperties.PROC_REQ_TEMP] = temperature
         self.data[NuosSplitProperties.REDUCED_TEMP] = reduced
 
@@ -174,7 +174,7 @@ class AristonNuosSplitDevice(AristonVelisDevice):
 
     def set_water_heater_operation_mode(self, operation_mode: str):
         """Set water heater operation mode"""
-        self.api.set_nuos_mode(self.gw, NuosSplitOperativeMode[operation_mode])
+        self.api.set_nuos_mode(self.gw, NuosSplitOperativeMode[operation_mode], self.umsys)
         self.data[NuosSplitProperties.MODE] = NuosSplitOperativeMode[
             operation_mode
         ].value
@@ -182,7 +182,7 @@ class AristonNuosSplitDevice(AristonVelisDevice):
     async def async_set_water_heater_operation_mode(self, operation_mode: str):
         """Async set water heater operation mode"""
         await self.api.async_set_nuos_mode(
-            self.gw, NuosSplitOperativeMode[operation_mode]
+            self.gw, NuosSplitOperativeMode[operation_mode], self.umsys
         )
         self.data[NuosSplitProperties.MODE] = NuosSplitOperativeMode[
             operation_mode
@@ -196,6 +196,7 @@ class AristonNuosSplitDevice(AristonVelisDevice):
             SlpDeviceSettings.SLP_MIN_SETPOINT_TEMPERATURE,
             min_setpoint_temp,
             self.plant_settings[SlpDeviceSettings.SLP_MIN_SETPOINT_TEMPERATURE],
+            self.umsys,
         )
         self.plant_settings[
             SlpDeviceSettings.SLP_MIN_SETPOINT_TEMPERATURE
@@ -209,6 +210,7 @@ class AristonNuosSplitDevice(AristonVelisDevice):
             SlpDeviceSettings.SLP_MIN_SETPOINT_TEMPERATURE,
             min_setpoint_temp,
             self.plant_settings[SlpDeviceSettings.SLP_MIN_SETPOINT_TEMPERATURE],
+            self.umsys,
         )
         self.plant_settings[
             SlpDeviceSettings.SLP_MIN_SETPOINT_TEMPERATURE
@@ -222,6 +224,7 @@ class AristonNuosSplitDevice(AristonVelisDevice):
             SlpDeviceSettings.SLP_PRE_HEATING_ON_OFF,
             preheating,
             self.plant_settings[SlpDeviceSettings.SLP_PRE_HEATING_ON_OFF],
+            self.umsys,
         )
         self.plant_settings[SlpDeviceSettings.SLP_PRE_HEATING_ON_OFF] = preheating
 
@@ -233,6 +236,7 @@ class AristonNuosSplitDevice(AristonVelisDevice):
             SlpDeviceSettings.SLP_PRE_HEATING_ON_OFF,
             preheating,
             self.plant_settings[SlpDeviceSettings.SLP_PRE_HEATING_ON_OFF],
+            self.umsys,
         )
         self.plant_settings[SlpDeviceSettings.SLP_PRE_HEATING_ON_OFF] = preheating
 
@@ -244,6 +248,7 @@ class AristonNuosSplitDevice(AristonVelisDevice):
             SlpDeviceSettings.SLP_HEATING_RATE,
             heating_rate,
             self.plant_settings[SlpDeviceSettings.SLP_HEATING_RATE],
+            self.umsys,
         )
         self.plant_settings[SlpDeviceSettings.SLP_HEATING_RATE] = heating_rate
 
@@ -255,5 +260,6 @@ class AristonNuosSplitDevice(AristonVelisDevice):
             SlpDeviceSettings.SLP_HEATING_RATE,
             heating_rate,
             self.plant_settings[SlpDeviceSettings.SLP_HEATING_RATE],
+            self.umsys,
         )
         self.plant_settings[SlpDeviceSettings.SLP_HEATING_RATE] = heating_rate
